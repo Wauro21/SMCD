@@ -150,6 +150,9 @@ void serialDecoder(ARDUINO_CONTROLS* ctrl, byte f_byte, byte s_byte, byte t_byte
 
 
 bool serialFSM(volatile Serial_States* serial_state, byte* f_byte, byte* s_byte, byte* t_byte){
+
+    byte check_cmd = 0x00;
+
     switch(*serial_state){
         case SERIAL_IDLE:{
             if(Serial.available()) *serial_state = FIRST_BYTE;
@@ -160,7 +163,19 @@ bool serialFSM(volatile Serial_States* serial_state, byte* f_byte, byte* s_byte,
         case FIRST_BYTE:{
             // Save readed value
             *f_byte = Serial.read();
-            *serial_state = WAIT_1;
+
+            // Check if more than one byte is expected
+            check_cmd = *f_byte & 0xC0; /// Save only the CMD part
+            if((check_cmd == 0xC0) | (check_cmd == 0x40)){
+                /// Default the other bytes to zero
+                *s_byte = 0x00;
+                *t_byte = 0x00;
+                *serial_state = DONE;
+            }
+            else{
+                *serial_state = WAIT_1;
+            }
+
             break;
         }
 
