@@ -4,6 +4,10 @@
   <img src='github_images/icon.png'>
 </p>
 
+**The `SMCD (Serial Motor Controller Driver)` allows to control a stepper-motor using an Arduino UNO in conjunction with the Pololu DVR8825 driver board. The driver is intended to be used with the SMC-GUI or API.**
+
+This is part of the [SMC project](https://github.com/Wauro21/SMC)! Check the main project or the python-based API [SMCC](https://github.com/Wauro21/SMCC).
+
 ## Index 
 
 - [Serial Motor Controller - Driver (SMCD):](#serial-motor-controller---driver-smcd)
