@@ -24,8 +24,8 @@ void setup() {
   /// Pin mode initialization
   pinMode(outPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
-  pinMode(highSwitch, INPUT_PULLUP); /// Interrupt mode
-  pinMode(lowSwitch, INPUT_PULLUP);  /// Interrupt mode
+  pinMode(highSwitch, INPUT); /// Interrupt mode
+  pinMode(lowSwitch, INPUT);  /// Interrupt mode
   pinMode(ms2Pin, OUTPUT); /// M_2 for microstepping
   pinMode(ms1Pin, OUTPUT); /// M_1 for microstepping
   pinMode(ms0Pin, OUTPUT); /// M_0 for microstepping
@@ -50,8 +50,8 @@ void setup() {
 
 
   /// Attach intterupt to switch pins
-  attachInterrupt(digitalPinToInterrupt(highSwitch), limitHalt, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(lowSwitch), limitHalt, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(highSwitch), limitHalt, LOW);
+  attachInterrupt(digitalPinToInterrupt(lowSwitch), limitHalt, LOW);
 
   confTimer1(); /// Setup timer configuration
   sei(); /// allow interrupts
@@ -62,7 +62,7 @@ void loop() {
     stopTimer1();
     interruptCounter = 0;
     limit_halt = false;
-    if(!controls.sleep) digitalWrite(sleepPin, HIGH);
+    if(!controls.sleep) digitalWrite(sleepPin, LOW);
   }
 
   received_data = serialFSM(&serial_state, &f_byte, &s_byte, &t_byte);
