@@ -71,7 +71,11 @@ void serialDecoder(ARDUINO_CONTROLS* ctrl, byte f_byte, byte s_byte, byte t_byte
             byte to_send[3];
             ctrl->direction = (bool)(f_byte & 0x01);
             ctrl->steps = (int)((s_byte<<8) | (t_byte));
-            ctrl->interrupt_to_steps = 2*ctrl->steps -1 ;
+            
+            // Check if value doesnt underflow
+            if(ctrl-> steps > 0) ctrl->interrupt_to_steps = 2*ctrl->steps -1 ;
+            else ctrl->interrupt_to_steps = 0;
+
             /// Update values to pinout
             ctrl->toStepPins();
             
